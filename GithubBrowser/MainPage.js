@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import AutheticationService from './AutheticationService';
 import Feed from './feed';
+import Search from './SearchForm'
 export default class MainPage extends Component {
 
     constructor(props)
@@ -62,7 +63,14 @@ export default class MainPage extends Component {
                         icon={require('./images/search.png')}
                         onPress={() => this.setState({selectedTab: 'Search'})}>
 
-                        <Text style={mainStyles.text}>Tab Search</Text>
+                        <NavigatorIOS
+                            style={{
+                            flex: 1
+                        }}
+                            initialRoute={{
+                            component: Search,
+                            title: 'Search'
+                        }}></NavigatorIOS>
 
                     </TabBarIOS.Item>
                 </TabBarIOS>
