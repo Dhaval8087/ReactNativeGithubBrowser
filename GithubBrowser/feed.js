@@ -6,9 +6,11 @@ import {
     Button,
     ListView,
     ActivityIndicator,
+    TouchableHighlight,
     Image
 } from 'react-native';
 import AutheticationService from './AutheticationService';
+import PushPayload from './PushPayload';
 import moment from 'moment';
 
 export default class Feed extends Component {
@@ -53,48 +55,64 @@ export default class Feed extends Component {
         });
 
     }
+    pressRow(rowData)
+    {
+       this.props.navigator.push({
+          title:'Push Event',
+          component:PushPayload,
+           passProps:{
+               PushEvent:rowData
+           }
+       });
+    }
     renderRow(rowData)
     {
         return (
-            <View
-                style={{
-                flex: 1,
-                flexDirection: 'row',
-                padding: 20,
-                alignItems: 'center',
-                borderColor: '#D7D7D7',
-                borderBottomWidth: 1
-            }}>
-                <Image
-                    source={{
-                    uri: rowData.actor.avatar_url
-                }}
+            <TouchableHighlight onPress={() => this.pressRow(rowData)} underlayColor='#ddd'>
+                <View
                     style={{
-                    height: 36,
-                    width: 36,
-                    borderRadius: 18
-                }}/>
-                <View style={{
-                    paddingLeft: 20
+                    flex: 1,
+                    flexDirection: 'row',
+                    padding: 20,
+                    alignItems: 'center',
+                    borderColor: '#D7D7D7',
+                    borderBottomWidth: 1
                 }}>
-                    <Text
+                    <Image
+                        source={{
+                        uri: rowData.actor.avatar_url
+                    }}
                         style={{
-                        backgroundColor: '#fff'
-                    }}>{moment(rowData.created_at).fromNow()}</Text>
-                    <Text
-                        style={{
-                        backgroundColor: '#fff'
-                    }}>{rowData.actor.login} pushed to</Text>
-                    <Text
-                        style={{
-                        backgroundColor: '#fff'
-                    }}>{rowData.payload.ref.replace('refs/heads/','')}</Text>
-                    <Text
-                        style={{
-                        backgroundColor: '#fff'
-                    }}>at {rowData.repo.name}</Text>
+                        height: 36,
+                        width: 36,
+                        borderRadius: 18
+                    }}/>
+                    <View style={{
+                        paddingLeft: 20
+                    }}>
+                        <Text
+                            style={{
+                            backgroundColor: '#fff'
+                        }}>{moment(rowData.created_at).fromNow()}</Text>
+                        <Text
+                            style={{
+                            backgroundColor: '#fff'
+                        }}>{rowData.actor.login}
+                            pushed to</Text>
+                        <Text
+                            style={{
+                            backgroundColor: '#fff'
+                        }}>{rowData
+                                .payload
+                                .ref
+                                .replace('refs/heads/', '')}</Text>
+                        <Text
+                            style={{
+                            backgroundColor: '#fff'
+                        }}>at {rowData.repo.name}</Text>
+                    </View>
                 </View>
-            </View>
+            </TouchableHighlight>
         )
     }
 

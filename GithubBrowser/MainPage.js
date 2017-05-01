@@ -1,12 +1,19 @@
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Button, TabBarIOS} from 'react-native';
+import {
+    Text,
+    View,
+    StyleSheet,
+    Button,
+    TabBarIOS,
+    NavigatorIOS
+} from 'react-native';
 import AutheticationService from './AutheticationService';
 import Feed from './feed';
 export default class MainPage extends Component {
 
-    constructor()
+    constructor(props)
     {
-        super();
+        super(props);
         this.state = {
             profileInfo: null,
             selectedTab: 'feed'
@@ -15,7 +22,7 @@ export default class MainPage extends Component {
     componentDidMount()
     {
         AutheticationService.getAuthInfo('user', (value) => {
-            
+
             this.setState({
                 profileInfo: JSON.parse(value)
             });
@@ -39,8 +46,15 @@ export default class MainPage extends Component {
                         icon={require('./images/inbox.png')}
                         onPress={() => this.setState({selectedTab: 'feed'})}>
 
-                        <Feed />
-                    
+                        <NavigatorIOS
+                            style={{
+                            flex: 1
+                        }}
+                            initialRoute={{
+                            component: Feed,
+                            title: 'Feed'
+                        }}></NavigatorIOS>
+
                     </TabBarIOS.Item>
                     <TabBarIOS.Item
                         title='Search'
@@ -49,7 +63,7 @@ export default class MainPage extends Component {
                         onPress={() => this.setState({selectedTab: 'Search'})}>
 
                         <Text style={mainStyles.text}>Tab Search</Text>
-                    
+
                     </TabBarIOS.Item>
                 </TabBarIOS>
             </View>
